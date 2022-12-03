@@ -1,8 +1,8 @@
 fn split_line(input: &str) -> impl Iterator<Item = (u8, u8)> + '_ {
-    let left = input.bytes().step_by(4);
-    let right = input.bytes().skip(2).step_by(4);
+    let left = input.bytes();
+    let right = input.bytes().skip(2);
 
-    left.zip(right)
+    left.zip(right).step_by(4)
 }
 
 pub fn one(input: &str) -> u32 {
@@ -20,6 +20,12 @@ pub fn one(input: &str) -> u32 {
         .sum()
 }
 
-pub fn two(_input: &str) -> u32 {
-    0
+pub fn two(input: &str) -> u32 {
+    split_line(input)
+        .map(|(l, r)| (l - b'A', r - b'X'))
+        .map(|(left, right)| {
+            let choice = (2 + left + right) % 3 + 1;
+            (3 * right + choice) as u32
+        })
+        .sum()
 }
