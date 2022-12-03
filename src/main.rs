@@ -1,5 +1,3 @@
-use std::time::Instant;
-
 mod days;
 
 fn main() -> anyhow::Result<()> {
@@ -7,7 +5,7 @@ fn main() -> anyhow::Result<()> {
 
     use days::two as current;
     for func in [current::one, current::two] {
-        let start = Instant::now();
+        let start = std::time::Instant::now();
         let res = func(&input);
         let dur = start.elapsed().as_nanos();
 
