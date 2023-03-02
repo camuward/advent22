@@ -8,19 +8,21 @@ fn unique_items(sect: &str) -> u64 {
         .fold(0u64, |acc, n| acc | (1 << n))
 }
 
-pub fn part_one(bags: &str) -> u32 {
-    bags.lines()
+pub fn part_one(bags: &str) -> eyre::Result<u32> {
+    Ok(bags
+        .lines()
         .map(|bag| bag.split_at(bag.len() / 2))
         .map(|(l, r)| [l, r].map(unique_items))
         .map(|[l, r]| u64::trailing_zeros(l & r))
-        .sum()
+        .sum())
 }
 
-pub fn part_two(bags: &str) -> u32 {
-    bags.lines()
+pub fn part_two(bags: &str) -> eyre::Result<u32> {
+    Ok(bags
+        .lines()
         .array_chunks::<3>() // unstable
         .map(|bags| bags.map(unique_items))
         .map(|[a, b, c]| a & b & c)
         .map(u64::trailing_zeros)
-        .sum()
+        .sum())
 }

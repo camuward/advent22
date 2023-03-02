@@ -1,5 +1,5 @@
-pub fn part_one(input: &str) -> u32 {
-    input
+pub fn part_one(input: &str) -> eyre::Result<u32> {
+    Ok(input
         .as_bytes()
         .array_chunks()
         .map(|&[left, _, right, _]| {
@@ -13,11 +13,11 @@ pub fn part_one(input: &str) -> u32 {
 
             (win_pts + choice_pts) as u32
         })
-        .sum()
+        .sum())
 }
 
-pub fn part_two(input: &str) -> u32 {
-    input
+pub fn part_two(input: &str) -> eyre::Result<u32> {
+    Ok(input
         .as_bytes()
         .array_chunks()
         .map(|&[l, _, r, _]| (l - b'A', r - b'X'))
@@ -27,5 +27,5 @@ pub fn part_two(input: &str) -> u32 {
 
             (win_pts + choice_pts) as u32
         })
-        .sum()
+        .sum())
 }
