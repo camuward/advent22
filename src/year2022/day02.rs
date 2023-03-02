@@ -1,4 +1,4 @@
-pub fn one(input: &str) -> u32 {
+pub fn part_one(input: &str) -> u32 {
     input
         .as_bytes()
         .array_chunks()
@@ -16,7 +16,7 @@ pub fn one(input: &str) -> u32 {
         .sum()
 }
 
-pub fn two(input: &str) -> u32 {
+pub fn part_two(input: &str) -> u32 {
     input
         .as_bytes()
         .array_chunks()

@@ -8,7 +8,7 @@ fn unique_items(sect: &str) -> u64 {
         .fold(0u64, |acc, n| acc | (1 << n))
 }
 
-pub fn one(bags: &str) -> u32 {
+pub fn part_one(bags: &str) -> u32 {
     bags.lines()
         .map(|bag| bag.split_at(bag.len() / 2))
         .map(|(l, r)| [l, r].map(unique_items))
@@ -16,7 +16,7 @@ pub fn one(bags: &str) -> u32 {
         .sum()
 }
 
-pub fn two(bags: &str) -> u32 {
+pub fn part_two(bags: &str) -> u32 {
     bags.lines()
         .array_chunks::<3>() // unstable
         .map(|bags| bags.map(unique_items))
