@@ -1,4 +1,4 @@
-#![feature(array_chunks, iter_array_chunks)]
+#![feature(slice_as_chunks, array_chunks, iter_array_chunks)]
 
 extern crate color_eyre as eyre;
 
