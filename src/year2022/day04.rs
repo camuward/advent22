@@ -30,6 +30,13 @@ pub fn part_one(input: &str) -> eyre::Result<u32> {
     Ok(redundant_pairs.count() as u32)
 }
 
-pub fn part_two(_input: &str) -> eyre::Result<u32> {
-    todo!()
+pub fn part_two(input: &str) -> eyre::Result<u32> {
+    let overlapping_pairs = iter_pairs(input).filter(|(left, right)| {
+        left.contains(right.start())
+            || left.contains(right.end())
+            || right.contains(left.start())
+            || right.contains(left.end())
+    });
+
+    Ok(overlapping_pairs.count() as u32)
 }
