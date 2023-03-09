@@ -1,6 +1,7 @@
-#![feature(slice_as_chunks, array_chunks, iter_array_chunks, get_many_mut)]
+#![feature(test, slice_as_chunks, array_chunks, iter_array_chunks, get_many_mut)]
 
 extern crate color_eyre as eyre;
+extern crate test;
 
 use year2022::day05 as current;
 
@@ -27,4 +28,16 @@ fn main() -> eyre::Result<()> {
     }
 
     Ok(())
+}
+
+#[bench]
+fn part_one(b: &mut test::Bencher) {
+    let input = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/input.txt")).unwrap();
+    b.iter(|| current::part_one(&input))
+}
+
+#[bench]
+fn part_two(b: &mut test::Bencher) {
+    let input = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/input.txt")).unwrap();
+    b.iter(|| current::part_two(&input))
 }

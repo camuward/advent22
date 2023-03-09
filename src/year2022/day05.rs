@@ -51,30 +51,26 @@ pub fn part_one(input: &str) -> String {
     let (drawing, mut instructions) = input.split_at(input.find("move").unwrap());
 
     let (tx, rx) = std::sync::mpsc::channel();
+    // let mut instr = vec![];
 
     let stacks = std::thread::scope(|s| {
         s.spawn(move || {
-            while !instructions.is_empty() {
-                let (input, step) = parse::movement_instruction(instructions).unwrap();
-                instructions = input;
+            while let Ok((next_input, step)) = parse::movement_instruction(instructions) {
+                instructions = next_input;
 
                 tx.send(step).unwrap();
+                // instr.push(step);
             }
         });
 
         // parse the initial state
         let (_, init_stacks) = parse::initial_state(drawing).unwrap();
-
         std::iter::from_fn(|| rx.recv().ok())
+            // instr.into_iter()
             // process the buffered instructions (rx.recv())
             .fold(init_stacks, |mut stacks, Step { count, src, dst }| {
                 let [src, dst] = stacks.get_many_mut([src - 1, dst - 1]).unwrap();
 
-                // let src = &mut stacks[src - 1];
-                // buf.extend(src.drain(src.len() - count..));
-
-                // let dst = &mut stacks[dst - 1];
-                // dst.extend(buf.drain(..).rev());
                 // move the crates one by one to the destination stack
                 let src_stack = src.drain(src.len() - count..);
                 dst.extend(src_stack.rev()); // reverse the order
