@@ -21,7 +21,7 @@ fn main() -> eyre::Result<()> {
 
     for func in [current::part_one, current::part_two] {
         let start = std::time::Instant::now();
-        let res = func(&input);
+        let res = func(&input)?;
         let dur = start.elapsed().as_nanos();
 
         println!("{res} ({dur} ns)");
@@ -33,11 +33,11 @@ fn main() -> eyre::Result<()> {
 #[bench]
 fn part_one(b: &mut test::Bencher) {
     let input = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/input.txt")).unwrap();
-    b.iter(|| current::part_one(&input))
+    b.iter(|| current::part_one(&input).unwrap())
 }
 
 #[bench]
 fn part_two(b: &mut test::Bencher) {
     let input = std::fs::read_to_string(concat!(env!("CARGO_MANIFEST_DIR"), "/input.txt")).unwrap();
-    b.iter(|| current::part_two(&input))
+    b.iter(|| current::part_two(&input).unwrap())
 }
