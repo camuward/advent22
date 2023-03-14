@@ -40,30 +40,15 @@ mod parse {
 
 pub fn part_one(input: &str) -> eyre::Result<String> {
     let (drawing, instructions) = input.split_at(input.find("move").unwrap());
+    let mut stacks = parse::initial_state(drawing).unwrap();
 
-    let (tx, rx) = std::sync::mpsc::channel();
-    // let mut instr = vec![];
+    for Step { count, src, dst } in parse::iter_steps(instructions) {
+        let [src, dst] = stacks.get_many_mut([src - 1, dst - 1]).unwrap();
 
-    let stacks = std::thread::scope(|s| {
-        s.spawn(move || {
-            for step in parse::iter_steps(instructions) {
-                tx.send(step).unwrap();
-                // instr.push(step);
-            }
-        });
-
-        // parse the initial state
-        let mut stacks = parse::initial_state(drawing).unwrap();
-        while let Ok(Step { count, src, dst }) = rx.recv() {
-            let [src, dst] = stacks.get_many_mut([src - 1, dst - 1]).unwrap();
-
-            // move the crates one by one to the destination stack
-            let src_stack = src.drain(src.len() - count..);
-            dst.extend(src_stack.rev()); // reverse the order
-        }
-
-        stacks
-    });
+        // move the crates one by one to the destination stack
+        let src_stack = src.drain(src.len() - count..);
+        dst.extend(src_stack.rev()); // reverse the order
+    }
 
     // get the top-most crate for each stack
     let top_crates = stacks.iter().filter_map(|crates| crates.last());
