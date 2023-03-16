@@ -12,7 +12,7 @@ pub fn part_one(input: &str) -> eyre::Result<usize> {
         true
     });
 
-    Ok(marker_pos.expect("no start-of-message marker") + 4)
+    Ok(marker_pos.expect("no start-of-packet marker") + 4)
 }
 
 pub fn part_two(input: &str) -> eyre::Result<usize> {
