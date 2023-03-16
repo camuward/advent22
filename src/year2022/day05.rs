@@ -29,7 +29,7 @@ mod parse {
         Ok(stacks)
     }
 
-    // Iterate over the provided list of instructions.
+    /// Iterate over the provided list of instructions.
     pub fn iter_steps(list: &str) -> impl Iterator<Item = Step> + '_ {
         list.split_whitespace()
             .filter_map(|num| num.parse().ok())
@@ -55,6 +55,18 @@ pub fn part_one(input: &str) -> eyre::Result<String> {
     Ok(top_crates.map(|&b| b as char).collect())
 }
 
-pub fn part_two(_input: &str) -> eyre::Result<String> {
-    todo!()
+pub fn part_two(input: &str) -> eyre::Result<String> {
+    let (drawing, instructions) = input.split_at(input.find("move").unwrap());
+    let mut stacks = parse::initial_state(drawing).unwrap();
+
+    for Step { count, src, dst } in parse::iter_steps(instructions) {
+        let [src, dst] = stacks.get_many_mut([src - 1, dst - 1]).unwrap();
+
+        // move the crates one by one to the destination stack
+        dst.extend(src.drain(src.len() - count..));
+    }
+
+    // get the top-most crate for each stack
+    let top_crates = stacks.iter().filter_map(|crates| crates.last());
+    Ok(top_crates.map(|&b| b as char).collect())
 }
