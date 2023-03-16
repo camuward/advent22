@@ -16,5 +16,18 @@ pub fn part_one(input: &str) -> eyre::Result<usize> {
 }
 
 pub fn part_two(input: &str) -> eyre::Result<usize> {
-    todo!()
+    let mut groups = input.as_bytes().windows(14);
+    let marker_pos = groups.position(|group| {
+        // check if the group is unique (thanks, LLVM!)
+        for (idx, el) in group.iter().enumerate() {
+            let mut after_el = group.iter().skip(idx + 1);
+            if after_el.any(|other| el == other) {
+                return false;
+            }
+        }
+
+        true
+    });
+
+    Ok(marker_pos.expect("no start-of-message marker") + 14)
 }
