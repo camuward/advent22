@@ -3,7 +3,7 @@
 extern crate color_eyre as eyre;
 extern crate test;
 
-use year2022::day05 as current;
+use year2022::day06 as current;
 
 #[allow(dead_code)]
 mod year2022 {
@@ -12,6 +12,7 @@ mod year2022 {
     pub mod day03;
     pub mod day04;
     pub mod day05;
+    pub mod day06;
 }
 
 fn main() -> eyre::Result<()> {
