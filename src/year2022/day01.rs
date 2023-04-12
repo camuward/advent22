@@ -1,28 +1,26 @@
-fn sum_cals<'a>(elf: impl Iterator<Item = &'a str>) -> u32 {
-    elf.filter_map(|cals| cals.parse::<u32>().ok()).sum()
+fn sum_cals<'a>(elf: &str) -> eyre::Result<u32> {
+    let mut cals = elf.lines().map(|cals| cals.parse::<u32>());
+    cals.try_fold(0, |acc, cal| Ok(acc + cal?)) // sum
 }
 
 pub fn part_one(input: &str) -> eyre::Result<u32> {
     let elves = input.split("\n\n");
-    let cals = elves.map(str::lines).map(sum_cals);
+    let mut cals = elves.map(sum_cals);
 
-    Ok(cals.max().unwrap_or(0))
+    cals.try_fold(u32::MIN, |max, cals| Ok(max.max(cals?)))
 }
 
 pub fn part_two(input: &str) -> eyre::Result<u32> {
     let elves = input.split("\n\n");
-    let cals = elves.map(str::lines).map(sum_cals);
-
-    let (mut a, mut b, mut c) = (0, 0, 0);
-    for d in cals {
-        use std::mem::replace as rep;
-        c = match d {
-            _ if d > a => rep(&mut b, rep(&mut a, d)),
-            _ if d > b => rep(&mut b, d),
-            _ if d > c => d,
-            _ => c,
-        };
+    let mut cals = elves.map(sum_cals);
+    let mut max_3 = [u32::MIN; 3]; // lowest -> highest
+    
+    while let Some(next) = cals.next().transpose()? {
+        if let Some(pos) = max_3.iter().rposition(|&max| next > max) {
+            max_3[..=pos].rotate_left(1);
+            max_3[pos] = next;
+        }
     }
 
-    Ok(a + b + c)
+    Ok(max_3.into_iter().sum())
 }
