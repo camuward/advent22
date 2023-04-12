@@ -1,16 +1,16 @@
-fn sum_cals<'a>(elf: &str) -> eyre::Result<u32> {
+fn sum_cals<'a>(elf: &str) -> crate::Result<u32> {
     let mut cals = elf.lines().map(|cals| cals.parse::<u32>());
     cals.try_fold(0, |acc, cal| Ok(acc + cal?)) // sum
 }
 
-pub fn part_one(input: &str) -> eyre::Result<u32> {
+pub fn part_one(input: &str) -> crate::Result<u32> {
     let elves = input.split("\n\n");
     let mut cals = elves.map(sum_cals);
 
     cals.try_fold(u32::MIN, |max, cals| Ok(max.max(cals?)))
 }
 
-pub fn part_two(input: &str) -> eyre::Result<u32> {
+pub fn part_two(input: &str) -> crate::Result<u32> {
     let elves = input.split("\n\n");
     let mut cals = elves.map(sum_cals);
     let mut max_3 = [u32::MIN; 3]; // lowest -> highest

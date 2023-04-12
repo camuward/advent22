@@ -1,4 +1,4 @@
-pub fn part_one(input: &str) -> eyre::Result<usize> {
+pub fn part_one(input: &str) -> crate::Result<usize> {
     let mut groups = input.as_bytes().windows(4);
     let marker_pos = groups.position(|group| {
         // check if the group is unique (thanks, LLVM!)
@@ -15,7 +15,7 @@ pub fn part_one(input: &str) -> eyre::Result<usize> {
     Ok(marker_pos.expect("no start-of-packet marker") + 4)
 }
 
-pub fn part_two(input: &str) -> eyre::Result<usize> {
+pub fn part_two(input: &str) -> crate::Result<usize> {
     let mut groups = input.as_bytes().windows(14);
     let marker_pos = groups.position(|group| {
         // check if the group is unique (thanks, LLVM!)

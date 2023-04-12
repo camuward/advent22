@@ -9,7 +9,7 @@ mod parse {
     use super::*;
 
     /// Parses the drawing of stacks.
-    pub fn initial_state(drawing: &str) -> eyre::Result<Vec<Vec<u8>>> {
+    pub fn initial_state(drawing: &str) -> crate::Result<Vec<Vec<u8>>> {
         let (content, labels) = drawing.rsplit_once(']').expect("no crates in drawing");
         let count_cols = labels
             .split_whitespace()
@@ -38,7 +38,7 @@ mod parse {
     }
 }
 
-pub fn part_one(input: &str) -> eyre::Result<String> {
+pub fn part_one(input: &str) -> crate::Result<String> {
     let (drawing, instructions) = input.split_at(input.find("move").unwrap());
     let mut stacks = parse::initial_state(drawing).unwrap();
 
@@ -55,7 +55,7 @@ pub fn part_one(input: &str) -> eyre::Result<String> {
     Ok(top_crates.map(|&b| b as char).collect())
 }
 
-pub fn part_two(input: &str) -> eyre::Result<String> {
+pub fn part_two(input: &str) -> crate::Result<String> {
     let (drawing, instructions) = input.split_at(input.find("move").unwrap());
     let mut stacks = parse::initial_state(drawing).unwrap();
 
